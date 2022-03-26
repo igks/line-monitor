@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Ignore db folder
 wwwroot/db
+wwwroot/img

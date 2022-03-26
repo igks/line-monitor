@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 namespace LineMonitoring.Models
 {
     public class Employee
@@ -8,6 +9,8 @@ namespace LineMonitoring.Models
         public string? BatchId { get; set; }
         public string? ProductId { get; set; }
         public string? ImageUrl { get; set; }
+
+        [NotMapped]
         public IFormFile Image { get; set; } = default!;
     }
 }

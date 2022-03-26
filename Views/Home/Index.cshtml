@@ -1,8 +1,84 @@
-﻿@{
+﻿@using LineMonitoring.Models
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Employee Form</h3>
+        </div>
+        <div class="card-body">
+            <form id="employee-form" asp-controller="Home" asp-action="AddUpdate" method="post" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between align-items-center">
+                    <input id="employee-id" name="Id" type="text" Value="-1" class="d-none">
+                    <div>
+                        <input id="code" name="Code" type="text" class="form-control" placeholder="521 ID">
+                    </div>
+                    <div>
+                        <input id="name" name="Name" type="text" class="form-control" placeholder="Employee Name">
+                    </div>
+                    <div>
+                        <input id="batch" name="BatchId" type="text" class="form-control" placeholder="Batch ID">
+                    </div>
+                    <div>
+                        <input id="product" name="ProductId" type="text" class="form-control" placeholder="Product ID">
+                    </div>
+                    <div>
+                        <input id="image-url" name="ImageUrl" type="text" class="form-control" placeholder="Select picture" onclick="document.getElementById('image-loader').click()" readonly>
+                        <input id="image-loader" name="Image" type="file" class="form-control" placeholder="Pincture" accept=".jpg,.jpeg,.png" hidden>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>Employee List</h3>
+        </div>
+        <div class="card-body" style="max-height: 550px; overflow: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">521 ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Batch ID</th>
+                        <th scope="col">Product ID</th>
+                        <th scope="col">Picture</th>
+                        <th scope="col">Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ((IEnumerable<Employee>)@ViewBag.Employee).Select((value, index) => new { index, value }))
+                    {
+                        int number = 1 + item.index;
+                        <tr>
+                            <th scope="row">@number</th>
+                            <td>@item.value.Code</td>
+                            <td>@item.value.Name</td>
+                            <td>@item.value.BatchId</td>
+                            <td>@item.value.ProductId</td>
+                            <td>@item.value.ImageUrl</td>
+                            <td>
+                                <div class="d-flex flex-row justify-content-around">
+                                    <div class="btn-edit" data-id="@item.value.Id">
+                                        <i class="bi bi-pencil-square text-info"></i>
+                                    </div>
+                                    <div class="btn-delete" data-id="@item.value.Id">
+                                        <i class="bi bi-trash text-danger"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/employee/index.js"></script>
