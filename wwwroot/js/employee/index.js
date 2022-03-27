@@ -1,43 +1,33 @@
-$(document).ready(() => {
+$(document).ready(function () {
   $("#image-loader").change(function () {
     if (this.files.length > 0) {
       $("#image-url").val(this.files[0].name);
     }
   });
 
-  $(".btn-edit").click(function () {
+  $(".btn-edit").click(async function () {
     const id = $(this).data("id");
-    $.ajax({
-      method: "get",
-      url: "/home/get",
-      data: {
-        id: id,
-      },
-      success: function (res) {
-        document.getElementById("employee-id").value = res.id;
-        $("#code").val(res.code);
-        $("#name").val(res.name);
-        $("#batch").val(res.batchId);
-        $("#product").val(res.productId);
-        $("#image-url").val(res.imageUrl);
-      },
-    });
+    const res = await httpGet("/employee/get/" + id);
+    if (res.isSuccess) {
+      const { id, code, name, batchId, productId, imageUrl } = res.data;
+      $("#employee-id").val(id);
+      $("#code").val(code);
+      $("#name").val(name);
+      $("#batch").val(batchId);
+      $("#product").val(productId);
+      $("#image-url").val(imageUrl);
+    } else {
+      alert("Failed to load the data!");
+    }
   });
 
-  $(".btn-delete").click(function () {
+  $(".btn-delete").click(async function () {
     const isConfirm = confirm("Do you want to remove the data?");
     if (!isConfirm) return;
 
     const id = $(this).data("id");
-    $.ajax({
-      method: "post",
-      url: "/home/delete",
-      data: {
-        id: id,
-      },
-      success: function (res) {
-        window.location.reload();
-      },
-    });
+    const res = await httpDelete("/employee/delete/" + id);
+    if (res.isSuccess) window.location.reload();
+    else alert(res.message);
   });
 });

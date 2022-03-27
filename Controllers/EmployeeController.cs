@@ -1,18 +1,14 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using LineMonitoring.Models;
-using System.Net.Http.Headers;
 
 namespace LineMonitoring.Controllers;
 
-public class HomeController : Controller
+public class EmployeeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly DBsContext _context;
 
-    public HomeController(ILogger<HomeController> logger, DBsContext context)
+    public EmployeeController(DBsContext context)
     {
-        _logger = logger;
         _context = context;
     }
 
@@ -24,26 +20,28 @@ public class HomeController : Controller
         return View();
     }
 
-    public JsonResult Get(int id)
+    [HttpGet]
+    public IActionResult Get(int id)
     {
         var employee = _context.Employee.FirstOrDefault(x => x.Id == id);
         if (employee == null)
-            return Json(new
+            return StatusCode(404, new
             {
                 message = "not found!"
             });
 
-        return Json(employee);
+        return Ok(employee);
     }
 
+    [HttpPost]
     public IActionResult AddUpdate(Employee employeeDto)
     {
-        string imageUrl = employeeDto.Id > 0 ? employeeDto.ImageUrl : "default.jpg";
+        string imageUrl = (employeeDto.Id != null && employeeDto.Id > 0) ? employeeDto.ImageUrl : "default.jpg";
         if (employeeDto.Image != null)
         {
             var file = employeeDto.Image;
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
-            var fileName = DateTime.Now.ToString("hhmmss_ddmmyy_") + ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = DateTime.Now.ToString("hhmmss_ddmmyy_") + file.FileName;
             var fullPath = Path.Combine(pathToSave, fileName);
             using (var stream = new FileStream(fullPath, FileMode.Create))
             {
@@ -81,34 +79,24 @@ public class HomeController : Controller
             _context.SaveChanges();
         }
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Employee");
     }
 
-    public JsonResult Delete(int id)
+    [HttpDelete]
+    public IActionResult Delete(int id)
     {
         var employee = _context.Employee.FirstOrDefault(x => x.Id == id);
         if (employee == null)
-            return Json(new
+            return StatusCode(404, new
             {
-                message = "not found!"
+                message = "Not found!"
             });
 
         _context.Employee.Remove(employee);
         _context.SaveChanges();
-        return Json(new
+        return Ok(new
         {
             message = "success"
         });
-    }
-
-    public IActionResult Chart()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
