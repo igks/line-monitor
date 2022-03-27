@@ -35,10 +35,17 @@
       <div class="card-header">
         Performances
       </div>
+      <div class="card-body d-flex flex-col justify-content-center align-items-center">
+        <div class="container" style="height: 450px; max-height: 450px;">
+          <canvas id="perf-chart" height="100"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 @section Scripts {
+<script src="~/lib/chartjs/chart.min.js"></script>
+<script src="~/js/display/chart.js" asp-append-version="true"></script>
 <script src="~/js/display/index.js" asp-append-version="true"></script>
 }
