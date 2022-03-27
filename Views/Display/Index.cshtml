@@ -1,0 +1,44 @@
+@{
+  ViewData["Title"] = "Display";
+}
+
+<div class="row px-4">
+  <div class="col-3">
+    <div class="card" style="height: 550px; max-height: 550px;">
+      <div class="card-header">
+        @ViewBag.Process
+      </div>
+      <div class="card-body">
+        <div class="w-100 text-center">
+          <img src="~/img/@ViewBag.Employee.ImageUrl" alt="Employee Profile" style="width: 80%; max-height: 280px;" />
+        </div>
+        <div class="card mt-3">
+          <div class="card-header">
+            <h4><strong>@ViewBag.Employee.Name</strong></h4>
+          </div>
+          <div class="card-body">
+            <h5><strong>Batch Id: @ViewBag.Employee.BatchId</strong></h5>
+            <hr>
+            <h5><strong>Product Id: @ViewBag.Employee.ProductId</strong></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3">
+      <input id="process" class="form-control form-control-sm mb-2" type="text" placeholder="Input Process Name">
+      <input id="employee-id" class="form-control form-control-sm mb-2" type="text" placeholder="Input Employee 521 ID">
+      <button id="btn-reload" class="btn btn-small btn-primary">Reload</button>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="card" style="height: 550px; max-height: 550px;">
+      <div class="card-header">
+        Performances
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script src="~/js/display/index.js" asp-append-version="true"></script>
+}
