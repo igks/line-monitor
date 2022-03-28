@@ -1,13 +1,18 @@
-function drawChart(xAxisLabel, data1, data1Label, data2, data2Label) {
+async function getChartData() {
+  const res = await httpGet("/graph/get");
+  return res;
+}
+
+function drawChart(chartObj) {
   const ctx = document.getElementById("perf-chart");
   const myChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: xAxisLabel,
+      labels: chartObj.axis,
       datasets: [
         {
-          label: data1Label,
-          data: data1,
+          label: chartObj.line1,
+          data: chartObj.data1,
           borderColor: "#04bd16",
           borderWidth: 2,
           backgroundColor: "rgba(4, 189, 22, 0.3)",
@@ -18,8 +23,8 @@ function drawChart(xAxisLabel, data1, data1Label, data2, data2Label) {
           pointHoverRadius: 10,
         },
         {
-          label: data2Label,
-          data: data2,
+          label: chartObj.line2,
+          data: chartObj.data2,
           borderColor: "#0420bd",
           borderWidth: 2,
           backgroundColor: "rgba(4, 32, 189, 0.3)",
@@ -41,7 +46,7 @@ function drawChart(xAxisLabel, data1, data1Label, data2, data2Label) {
       plugins: {
         title: {
           display: true,
-          text: "Performance Trend",
+          text: chartObj.title,
         },
       },
       scales: {
@@ -51,7 +56,7 @@ function drawChart(xAxisLabel, data1, data1Label, data2, data2Label) {
           position: "left",
           title: {
             display: true,
-            text: data1Label,
+            text: chartObj.line1,
           },
         },
         y1: {
@@ -60,7 +65,7 @@ function drawChart(xAxisLabel, data1, data1Label, data2, data2Label) {
           position: "right",
           title: {
             display: true,
-            text: data2Label,
+            text: chartObj.line2,
           },
 
           // grid line settings

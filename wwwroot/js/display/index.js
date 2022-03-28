@@ -1,25 +1,18 @@
-$(document).ready(function () {
-  const xAxisLabel = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul"];
-  const data1 = Array.from({ length: 7 }, () =>
-    Math.floor(Math.random() * 100)
-  );
-  const data1label = "Line 1";
-  const data2 = Array.from({ length: 7 }, () =>
-    Math.floor(Math.random() * 1000)
-  );
-  const data2Label = "Line 2";
-
-  let myChart = drawChart(xAxisLabel, data1, data1label, data2, data2Label);
-  console.log(myChart);
+$(document).ready(async function () {
+  const data = await loadChartData();
+  const { title, line1, line2, data1, data2, axis } = data;
+  const chartObj = {
+    title: title,
+    line1: line1,
+    line2: line2,
+    data1: data1.split(","),
+    data2: data2.split(","),
+    axis: axis.split(","),
+  };
+  let myChart = drawChart(chartObj);
 
   setInterval(function () {
-    myChart.data.datasets[0].data = Array.from({ length: 7 }, () =>
-      Math.floor(Math.random() * 100)
-    );
-    myChart.data.datasets[1].data = Array.from({ length: 7 }, () =>
-      Math.floor(Math.random() * 100)
-    );
-    myChart.update();
+    updateChart(myChart);
   }, 2000);
 
   $("#btn-reload").click(function () {
@@ -32,3 +25,21 @@ $(document).ready(function () {
     window.location.href = `/display?id=${id}&process=${process}`;
   });
 });
+
+async function loadChartData() {
+  const graphData = await getChartData();
+  return graphData.isSuccess ? graphData.data : null;
+}
+
+async function updateChart(chart) {
+  const { isSuccess, data } = await getChartData();
+  if (isSuccess) {
+    chart.data.labels = data.axis.split(",");
+    chart.data.datasets[0].label = data.line1;
+    chart.data.datasets[0].data = data.data1.split(",");
+    chart.data.datasets[1].label = data.line2;
+    chart.data.datasets[1].data = data.data2.split(",");
+    chart.options.plugins.title.text = data.title;
+    chart.update();
+  }
+}

@@ -24,13 +24,15 @@ namespace LiMo.Controllers
             };
 
             ViewBag.Employee = employee;
-            ViewBag.Process = "Process Name";
+            ViewBag.Process = process != null ? process : "Process Name";
 
             if (id != null)
             {
                 employee = _context.Employee.FirstOrDefault(x => x.Code == id);
-                ViewBag.Employee = employee;
-                ViewBag.Process = process;
+                if (employee != null)
+                {
+                    ViewBag.Employee = employee;
+                }
             }
 
             return View();
