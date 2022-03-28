@@ -1,6 +1,55 @@
+$(document).ready(function () {
+  $("#btn-update").click(async function () {
+    await updateChartData();
+  });
+});
+
 async function getChartData() {
   const res = await httpGet("/graph/get");
   return res;
+}
+
+async function updateChartData() {
+  const title = $("#title").val();
+  const line1 = $("#line1").val();
+  const line2 = $("#line2").val();
+  const axis = $(".axis")
+    .map(function () {
+      return this.value;
+    })
+    .get()
+    .join(",");
+  const data1 = $(".data1")
+    .map(function () {
+      return this.value;
+    })
+    .get()
+    .join(",");
+  const data2 = $(".data2")
+    .map(function () {
+      return this.value;
+    })
+    .get()
+    .join(",");
+
+  const data = {
+    id: 1,
+    title,
+    line1,
+    line2,
+    data1,
+    data2,
+    axis,
+  };
+  console.log(data);
+
+  const res = await httpPost("/graph/update", data);
+  if (res.isSuccess) {
+    alert("Data updated successfully");
+    window.location.reload();
+  } else {
+    alert("Updating data failed on save, please try again!");
+  }
 }
 
 function drawChart(chartObj) {

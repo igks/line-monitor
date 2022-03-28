@@ -13,7 +13,7 @@ $(document).ready(async function () {
 
   setInterval(function () {
     updateChart(myChart);
-  }, 2000);
+  }, 5000);
 
   $("#btn-reload").click(function () {
     const id = $("#employee-id").val();

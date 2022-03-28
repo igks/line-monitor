@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Chart Data";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3>Chart Properties</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="title" class="form-label">Chart Title</label>
+                    <input name="title" type="text" class="form-control form-control-sm" id="title" Value="@ViewBag.Graph.Title">
+                </div>
+                <div class="col-4">
+                    <label for="line1" class="form-label">Label for Line 1</label>
+                    <input name="line1" type="text" class="form-control form-control-sm" id="line1" Value="@ViewBag.Graph.Line1">
+                </div>
+                <div class="col-4">
+                    <label for="line2" class="form-label">Label for Line 2</label>
+                    <input name="line2" type="text" class="form-control form-control-sm" id="line2" Value="@ViewBag.Graph.Line2">
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="axis" class="form-label">Axis Data</label>
+                <div class="row">
+                    @foreach (var item in @ViewBag.Graph.Axis.Split(","))
+                    {
+                        <div class="col">
+                            <input name="axis" type="text" class="form-control form-control-sm axis" Value="@item">
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="data1" class="form-label">Data for Line 1</label>
+                <div class="row">
+                    @foreach (var item in @ViewBag.Graph.Data1.Split(","))
+                    {
+                        <div class="col">
+                            <input name="data1" type="number" class="form-control form-control-sm data1" Value="@item">
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="data2" class="form-label">Data for Line 2</label>
+                <div class="row">
+                    @foreach (var item in @ViewBag.Graph.Data2.Split(","))
+                    {
+                        <div class="col">
+                            <input name="data2" type="number" class="form-control form-control-sm data2" Value="@item">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btn-update" class="btn btn-primary mt-3">Update</button>
+</div>
+
+@section Scripts {
+<script src="~/lib/chartjs/chart.min.js"></script>
+<script src="~/js/display/chart.js" asp-append-version="true"></script>
+}
