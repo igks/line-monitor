@@ -24,6 +24,14 @@ $(document).ready(async function () {
     }
     window.location.href = `/display?id=${id}&process=${process}`;
   });
+
+  $("#btn-search").click(function () {
+    if ($("#req-form").attr("hidden")) {
+      $("#req-form").removeAttr("hidden");
+    } else {
+      $("#req-form").attr("hidden", true);
+    }
+  });
 });
 
 async function loadChartData() {

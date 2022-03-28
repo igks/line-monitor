@@ -13,23 +13,23 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <input id="employee-id" name="Id" type="text" Value="-1" class="d-none">
                     <div>
-                        <input id="code" name="Code" type="text" class="form-control" placeholder="521 ID">
+                        <input id="code" name="Code" type="text" class="form-control" placeholder="521 ID" required>
                     </div>
                     <div>
-                        <input id="name" name="Name" type="text" class="form-control" placeholder="Employee Name">
+                        <input id="name" name="Name" type="text" class="form-control" placeholder="Employee Name" required>
                     </div>
                     <div>
-                        <input id="batch" name="BatchId" type="text" class="form-control" placeholder="Batch ID">
+                        <input id="batch" name="BatchId" type="text" class="form-control" placeholder="Batch ID" required>
                     </div>
                     <div>
-                        <input id="product" name="ProductId" type="text" class="form-control" placeholder="Product ID">
+                        <input id="product" name="ProductId" type="text" class="form-control" placeholder="Product ID" required>
                     </div>
                     <div>
                         <input id="image-url" name="ImageUrl" type="text" class="form-control" placeholder="Select picture" onclick="document.getElementById('image-loader').click()" readonly>
                         <input id="image-loader" name="Image" type="file" class="form-control" placeholder="Pincture" accept=".jpg,.jpeg,.png" hidden>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button id="btn-add" type="submit" class="btn btn-primary">ADD</button>
                     </div>
                 </div>
             </form>

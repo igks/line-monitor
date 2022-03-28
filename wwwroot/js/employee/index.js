@@ -6,6 +6,7 @@ $(document).ready(function () {
   });
 
   $(".btn-edit").click(async function () {
+    $("#btn-add").html("SAVE");
     const id = $(this).data("id");
     const res = await httpGet("/employee/get/" + id);
     if (res.isSuccess) {
