@@ -16,6 +16,7 @@ namespace LiMo.Controllers
         {
             var graph = _context.Graph.Find(1);
             ViewBag.Graph = graph;
+            ViewBag.IsSuccess = TempData["IsSuccess"] ?? false;
 
             return View();
         }
@@ -38,6 +39,13 @@ namespace LiMo.Controllers
 
             _context.SaveChanges();
             return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult RedirectRequest()
+        {
+            TempData["IsSuccess"] = true;
+            return RedirectToAction("Index", "Graph");
         }
     }
 }

@@ -4,6 +4,19 @@
 }
 
 <div class="container-fluid">
+    @if (ViewBag.Action == "create")
+    {
+        <div id="alert-create"></div>
+    }
+    @if (ViewBag.Action == "update")
+    {
+        <div id="alert-update"></div>
+    }
+    @if (ViewBag.Action == "delete")
+    {
+        <div id="alert-delete"></div>
+    }
+
     <div class="card mb-3">
         <div class="card-header">
             <h3>Employee Form</h3>

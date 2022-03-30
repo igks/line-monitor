@@ -3,6 +3,11 @@
 }
 
 <div class="container-fluid">
+    @if (ViewBag.IsSuccess == true)
+    {
+        <div id="alert-success"></div>
+    }
+
     <div class="card">
         <div class="card-header">
             <h3>Chart Properties</h3>

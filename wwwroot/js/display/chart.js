@@ -1,4 +1,11 @@
 $(document).ready(function () {
+  if ($("#alert-success").length > 0) {
+    showAlert("success", "Chart data updated successfully.");
+    setTimeout(() => {
+      $("#alert-success").remove();
+    }, 1000);
+  }
+
   $("#btn-update").click(async function () {
     await updateChartData();
   });
@@ -41,14 +48,12 @@ async function updateChartData() {
     data2,
     axis,
   };
-  console.log(data);
 
   const res = await httpPost("/graph/update", data);
   if (res.isSuccess) {
-    alert("Data updated successfully");
-    window.location.reload();
+    window.location.href = "/graph/redirectrequest";
   } else {
-    alert("Updating data failed on save, please try again!");
+    showAlert("error", "Updating data failed on save, please try again!");
   }
 }
 

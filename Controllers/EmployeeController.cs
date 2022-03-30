@@ -12,10 +12,28 @@ public class EmployeeController : Controller
         _context = context;
     }
 
+    [HttpGet]
     public IActionResult Index()
     {
         var employees = _context.Employee.ToList();
         ViewBag.Employee = employees;
+
+        var Action = TempData["action"];
+        switch (Action)
+        {
+            case "create":
+                ViewBag.Action = "create";
+                break;
+            case "update":
+                ViewBag.Action = "update";
+                break;
+            case "delete":
+                ViewBag.Action = "delete";
+                break;
+            default:
+                ViewBag.Action = "";
+                break;
+        }
 
         return View();
     }
@@ -62,6 +80,7 @@ public class EmployeeController : Controller
                 currentEmployee.ImageUrl = imageUrl;
 
                 _context.SaveChanges();
+                TempData["action"] = "update";
             }
         }
         else
@@ -77,6 +96,7 @@ public class EmployeeController : Controller
 
             _context.Employee.Add(employee);
             _context.SaveChanges();
+            TempData["action"] = "create";
         }
 
         return RedirectToAction("Index", "Employee");
@@ -94,9 +114,17 @@ public class EmployeeController : Controller
 
         _context.Employee.Remove(employee);
         _context.SaveChanges();
+
         return Ok(new
         {
             message = "success"
         });
+    }
+
+    [HttpGet]
+    public IActionResult RedirectRequest()
+    {
+        TempData["action"] = "delete";
+        return RedirectToAction("Index", "Employee");
     }
 }
