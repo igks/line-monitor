@@ -55,6 +55,7 @@ public class EmployeeController : Controller
     public IActionResult AddUpdate(Employee employeeDto)
     {
         string imageUrl = (employeeDto.Id != null && employeeDto.Id > 0) ? employeeDto.ImageUrl : "default.jpg";
+        var isImageUpdated = false;
         if (employeeDto.Image != null)
         {
             var file = employeeDto.Image;
@@ -66,6 +67,7 @@ public class EmployeeController : Controller
                 file.CopyTo(stream);
             }
             imageUrl = fileName;
+            isImageUpdated = true;
         }
 
         if (employeeDto.Id > 0)
@@ -73,6 +75,16 @@ public class EmployeeController : Controller
             var currentEmployee = _context.Employee.FirstOrDefault(x => x.Id == employeeDto.Id);
             if (currentEmployee != null)
             {
+                if (isImageUpdated)
+                {
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                    var existingImagePath = Path.Combine(pathToSave, currentEmployee.ImageUrl);
+                    if (System.IO.File.Exists(existingImagePath))
+                    {
+                        System.IO.File.Delete(existingImagePath);
+                    }
+                }
+
                 currentEmployee.Code = employeeDto.Code;
                 currentEmployee.Name = employeeDto.Name;
                 currentEmployee.BatchId = employeeDto.BatchId;
@@ -111,6 +123,17 @@ public class EmployeeController : Controller
             {
                 message = "Not found!"
             });
+
+        var fileName = employee.ImageUrl;
+        if (fileName != "default.jpg")
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+            var fullPath = Path.Combine(filePath, fileName);
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+        }
 
         _context.Employee.Remove(employee);
         _context.SaveChanges();
