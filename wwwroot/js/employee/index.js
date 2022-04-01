@@ -23,12 +23,14 @@ $(document).ready(function () {
     const id = $(this).data("id");
     const res = await httpGet("/employee/get/" + id);
     if (res.isSuccess) {
-      const { id, code, name, batchId, productId, imageUrl } = res.data;
+      const { id, code, name, batchId, productId, processName, imageUrl } =
+        res.data;
       $("#employee-id").val(id);
       $("#code").val(code);
       $("#name").val(name);
       $("#batch").val(batchId);
       $("#product").val(productId);
+      $("#process").val(processName);
       $("#image-url").val(imageUrl);
     } else {
       alert("Failed to load the data!");
@@ -44,6 +46,29 @@ $(document).ready(function () {
       window.location.href = "/employee/redirectrequest";
     } else {
       showAlert("error", res.message);
+    }
+  });
+
+  $(".btn-show").click(async function () {
+    const isShow = $(this).data("show");
+    if (isShow == "False") {
+      showAlert(
+        "error",
+        "Can not show the employee when the current status disable!"
+      );
+      return;
+    }
+    const process = $(this).data("process");
+    window.location.href = "/display?id=" + process;
+  });
+
+  $(".current-flag").click(async function () {
+    const id = $(this).data("id");
+    const value = $(this).is(":checked");
+    const data = { id: id, value: value };
+    const res = await httpPost("/employee/flag", data);
+    if (res.isSuccess) {
+      showAlert("success", "Flag updated successfully");
     }
   });
 });

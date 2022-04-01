@@ -13,5 +13,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+
+     
   </ItemGroup>
+
+  <ItemGroup>
+    <Watch Remove="wwwroot\db\*.db-wal" />
+    <Watch Remove="wwwroot\db\*.db-shm" />
+    <Watch Remove="wwwroot\db\*.db" />
+  </ItemGroup>
+
+ 
 </Project>

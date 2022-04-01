@@ -12,7 +12,7 @@ namespace LiMo.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string id, string process)
+        public IActionResult Index(string id)
         {
             var employee = new Employee()
             {
@@ -24,17 +24,23 @@ namespace LiMo.Controllers
             };
 
             ViewBag.Employee = employee;
-            ViewBag.Process = process != null ? process : "Process Name";
-
             if (id != null)
             {
-                employee = _context.Employee.FirstOrDefault(x => x.Code == id);
+                employee = _context.Employee.FirstOrDefault(x => x.ProcessName == id && x.IsCurrent == true);
                 if (employee != null)
                 {
                     ViewBag.Employee = employee;
                 }
             }
 
+            var employeeList = _context.Employee.Where(x => x.IsCurrent == true).ToList();
+            ViewBag.EmpList = employeeList;
+
+            return View();
+        }
+
+        public IActionResult Chart()
+        {
             return View();
         }
     }

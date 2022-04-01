@@ -9,6 +9,8 @@ namespace LineMonitoring.Models
         public string? Name { get; set; }
         public string? BatchId { get; set; }
         public string? ProductId { get; set; }
+        public string? ProcessName { get; set; }
+        public bool IsCurrent { get; set; }
         public string? ImageUrl { get; set; }
 #nullable disable
 

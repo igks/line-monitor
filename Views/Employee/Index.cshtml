@@ -29,14 +29,26 @@
                         <input id="code" name="Code" type="text" class="form-control" placeholder="521 ID" required>
                     </div>
                     <div>
+                        <select class="form-select" id="process" name="ProcessName" required>
+                            <option selected>Select machine name</option>
+                            <option value="Auto Cartoner 1">Auto Cartoner 1</option>
+                            <option value="Auto Cartoner 2">Auto Cartoner 2</option>
+                            <option value="Labeler 1">Labeler 1</option>
+                            <option value="Labeler 2">Labeler 2</option>
+                            <option value="Manual Cartoner">Manual Cartoner</option>
+                        </select>
+                    </div>
+
+                    <div>
                         <input id="name" name="Name" type="text" class="form-control" placeholder="Employee Name" required>
                     </div>
                     <div>
-                        <input id="batch" name="BatchId" type="text" class="form-control" placeholder="Batch ID" required>
+                        <input id="batch" name="BatchId" type="text" class="form-control" placeholder="Batch Number" required>
                     </div>
                     <div>
-                        <input id="product" name="ProductId" type="text" class="form-control" placeholder="Product ID" required>
+                        <input id="product" name="ProductId" type="text" class="form-control" placeholder="Product Description" required>
                     </div>
+
                     <div>
                         <input id="image-url" name="ImageUrl" type="text" class="form-control" placeholder="Select picture" onclick="document.getElementById('image-loader').click()" readonly>
                         <input id="image-loader" name="Image" type="file" class="form-control" placeholder="Pincture" accept=".jpg,.jpeg,.png" hidden>
@@ -58,10 +70,12 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">521 ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Batch ID</th>
-                        <th scope="col">Product ID</th>
-                        <th scope="col">Picture</th>
+                        <th scope="col">Machine Name</th>
+                        <th scope="col">Employee Name</th>
+                        <th scope="col">Batch Number</th>
+                        <th scope="col">Product Description</th>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Current Show</th>
                         <th scope="col">Option</th>
                     </tr>
                 </thead>
@@ -72,12 +86,19 @@
                         <tr>
                             <th scope="row">@number</th>
                             <td>@item.value.Code</td>
+                            <td>@item.value.ProcessName</td>
                             <td>@item.value.Name</td>
                             <td>@item.value.BatchId</td>
                             <td>@item.value.ProductId</td>
                             <td>@item.value.ImageUrl</td>
                             <td>
+                                <input class="current-flag" data-id="@item.value.Id" type="checkbox" checked="@item.value.IsCurrent" />
+                            </td>
+                            <td>
                                 <div class="d-flex flex-row justify-content-around">
+                                    <div class="btn-show" data-id="@item.value.Code" data-show="@item.value.IsCurrent" data-process="@item.value.ProcessName">
+                                        <i class="bi bi-tv text-success"></i>
+                                    </div>
                                     <div class="btn-edit" data-id="@item.value.Id">
                                         <i class="bi bi-pencil-square text-info"></i>
                                     </div>

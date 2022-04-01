@@ -33,7 +33,15 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-default" asp-area="" asp-controller="Display" asp-action="Index">Display</a>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Display
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Display" asp-action="Index">Process Line</a></li>
+                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Display" asp-action="Chart">Trend Performance</a></li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>

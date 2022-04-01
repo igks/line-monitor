@@ -51,7 +51,6 @@ public class EmployeeController : Controller
         return Ok(employee);
     }
 
-    [HttpPost]
     public IActionResult AddUpdate(Employee employeeDto)
     {
         string imageUrl = (employeeDto.Id != null && employeeDto.Id > 0) ? employeeDto.ImageUrl : "default.jpg";
@@ -77,11 +76,14 @@ public class EmployeeController : Controller
             {
                 if (isImageUpdated)
                 {
-                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
-                    var existingImagePath = Path.Combine(pathToSave, currentEmployee.ImageUrl);
-                    if (System.IO.File.Exists(existingImagePath))
+                    if (currentEmployee.ImageUrl != "default.jpg")
                     {
-                        System.IO.File.Delete(existingImagePath);
+                        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                        var existingImagePath = Path.Combine(pathToSave, currentEmployee.ImageUrl);
+                        if (System.IO.File.Exists(existingImagePath))
+                        {
+                            System.IO.File.Delete(existingImagePath);
+                        }
                     }
                 }
 
@@ -89,6 +91,7 @@ public class EmployeeController : Controller
                 currentEmployee.Name = employeeDto.Name;
                 currentEmployee.BatchId = employeeDto.BatchId;
                 currentEmployee.ProductId = employeeDto.ProductId;
+                currentEmployee.ProcessName = employeeDto.ProcessName;
                 currentEmployee.ImageUrl = imageUrl;
 
                 _context.SaveChanges();
@@ -103,6 +106,7 @@ public class EmployeeController : Controller
                 Name = employeeDto.Name,
                 BatchId = employeeDto.BatchId,
                 ProductId = employeeDto.ProductId,
+                ProcessName = employeeDto.ProcessName,
                 ImageUrl = imageUrl
             };
 
@@ -150,4 +154,28 @@ public class EmployeeController : Controller
         TempData["action"] = "delete";
         return RedirectToAction("Index", "Employee");
     }
+
+    [HttpPost]
+    public IActionResult Flag([FromBody] FlagDto dto)
+    {
+        var employee = _context.Employee.FirstOrDefault(x => x.Id == dto.Id);
+        if (employee == null)
+            return StatusCode(404, new
+            {
+                message = "Not found!"
+            });
+
+        employee.IsCurrent = dto.Value;
+        _context.SaveChanges();
+
+        return Ok(employee);
+    }
+
+
+}
+
+public class FlagDto
+{
+    public int Id { get; set; }
+    public bool Value { get; set; }
 }
